@@ -29,7 +29,7 @@ class Bot(commands.Bot):
             return
 
         # Print the contents of our message to console...
-        print(message.content)
+        #print(message.content)
 
         # Since we have commands and are overriding the default `event_message`
         # We must let the bot know we want to handle and invoke our commands...
@@ -48,6 +48,7 @@ class Bot(commands.Bot):
             f = codecs.open("chat.txt", 'w', 'utf-8')
             f.write(ctx.message.content[4:])
             f.close()
+            print(ctx.message.content)
 
 
 bot = Bot()
