@@ -2,12 +2,19 @@ from twitchio.ext import commands
 import codecs
 from datetime import datetime
 
+class BotOptions():
+    showtime = False
+
+    def __init__(self, opts):
+        self.__dict__.update(opts)
+
 class Bot(commands.Bot):
-    def __init__(self, twitchtoken: str, channel: str):
+    def __init__(self, twitchtoken: str, channel: str, options: BotOptions):
         # Initialise our Bot with our access token, prefix and a list of channels to join on boot...
         # prefix can be a callable, which returns a list of strings or a string...
         # initial_channels can also be a callable which returns a list of strings...
         self.channel_name = channel
+        self.options = options
         super().__init__(token=twitchtoken, prefix='!', initial_channels=[channel])
         self.file = codecs.open("chat.txt", 'w', 'utf-8')
 
@@ -33,6 +40,11 @@ class Bot(commands.Bot):
     async def 번역(self, ctx: commands.Context):
         if (ctx.author.is_mod or ctx.author.name == self.channel_name):
             content = ctx.message.content[4:]
+
+            if self.options.showtime:
+                now = datetime.now()
+                timefstr = now.strftime("%H:%M:%S")
+                content = f"[{timefstr}] {content}"
 
             self.file.write("\n" + content)
             self.file.flush()

@@ -1,6 +1,6 @@
 from os import path
 import configparser
-from bot import Bot
+from bot import Bot, BotOptions
 
 if not path.isfile('config.ini'):
     print("no config.ini file")
@@ -20,5 +20,7 @@ if not channel:
     print("Invalid config.ini : TWITCH:CHANNEL")
     exit(1)
 
-bot = Bot(twitchtoken, channel)
+bot = Bot(twitchtoken, channel, BotOptions({
+    "showtime": config.get("CHAT", "showtime")
+}))
 bot.run()
